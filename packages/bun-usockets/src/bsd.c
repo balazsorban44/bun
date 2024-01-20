@@ -25,6 +25,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <arpa/inet.h>
+#include <string.h>
 
 #ifndef _WIN32
 //#define _GNU_SOURCE
@@ -761,6 +762,9 @@ LIBUS_SOCKET_DESCRIPTOR bsd_create_connect_socket(const char *host, int port, co
         hints.ai_family = AF_INET6;
     } else {
         hints.ai_family = AF_UNSPEC;
+    }
+    if (strcmp(host, "localhost") == 0) {
+        hints.ai_family = AF_INET;
     }
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_flags = AI_DEFAULT;
