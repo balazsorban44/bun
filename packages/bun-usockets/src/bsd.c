@@ -24,6 +24,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <arpa/inet.h>
 
 #ifndef _WIN32
 //#define _GNU_SOURCE
@@ -752,7 +753,15 @@ static int bsd_do_connect(struct addrinfo *rp, int *fd)
 LIBUS_SOCKET_DESCRIPTOR bsd_create_connect_socket(const char *host, int port, const char *source_host, int options) {
     struct addrinfo hints, *result;
     memset(&hints, 0, sizeof(struct addrinfo));
-    hints.ai_family = AF_INET;
+    char buf[16];
+
+    if (inet_pton(AF_INET, host, buf)) {
+        hints.ai_family = AF_INET;
+    } else if (inet_pton(AF_INET6, host, buf)) {
+        hints.ai_family = AF_INET6;
+    } else {
+        hints.ai_family = AF_UNSPEC;
+    }
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_flags = AI_DEFAULT;
     hints.ai_protocol = IPPROTO_TCP;
