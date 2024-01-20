@@ -519,8 +519,11 @@ pub fn NewSocketHandler(comptime is_ssl: bool) type {
 
             const host_: ?[*:0]u8 = brk: {
                 // getaddrinfo expects `node` to be null if localhost
-                if (host.len < 6 and (bun.strings.eqlComptime(host, "[::1]") or bun.strings.eqlComptime(host, "[::]"))) {
-                    break :brk null;
+                if (host.len < 6) {
+                    if (bun.strings.eqlComptime(host, "[::1]")) break :brk null;
+                    if (bun.strings.eqlComptime(host, "[::]")) break :brk null;
+                    if (bun.strings.eqlComptime(host, "::1")) break :brk null;
+                    if (bun.strings.eqlComptime(host, "::")) break :brk null;
                 }
 
                 break :brk allocator.dupeZ(u8, host) catch return null;

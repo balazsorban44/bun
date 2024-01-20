@@ -285,11 +285,7 @@ pub fn NewHTTPUpgradeClient(comptime ssl: bool) type {
             const prev_start_server_on_next_tick = vm.eventLoop().start_server_on_next_tick;
             vm.eventLoop().start_server_on_next_tick = true;
             client.poll_ref.ref(vm);
-            const display_host_ = host_.slice();
-            const display_host = if (bun.FeatureFlags.hardcode_localhost_to_127_0_0_1 and strings.eqlComptime(display_host_, "localhost"))
-                "127.0.0.1"
-            else
-                display_host_;
+            const display_host = host_.slice();
 
             if (Socket.connectPtr(
                 display_host,

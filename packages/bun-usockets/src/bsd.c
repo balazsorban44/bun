@@ -752,8 +752,10 @@ static int bsd_do_connect(struct addrinfo *rp, int *fd)
 LIBUS_SOCKET_DESCRIPTOR bsd_create_connect_socket(const char *host, int port, const char *source_host, int options) {
     struct addrinfo hints, *result;
     memset(&hints, 0, sizeof(struct addrinfo));
-    hints.ai_family = AF_UNSPEC;
+    hints.ai_family = AF_INET;
     hints.ai_socktype = SOCK_STREAM;
+    hints.ai_flags = AI_DEFAULT;
+    hints.ai_protocol = IPPROTO_TCP;
 
     char port_string[16];
     snprintf(port_string, 16, "%d", port);
