@@ -845,7 +845,7 @@ pub const HTTPThread = struct {
 
 const log = Output.scoped(.fetch, false);
 
-var temp_hostname: [8096]u8 = undefined;
+var temp_hostname: [8192]u8 = undefined;
 
 pub fn checkServerIdentity(
     client: *HTTPClient,

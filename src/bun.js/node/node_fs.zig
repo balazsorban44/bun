@@ -5140,7 +5140,7 @@ pub const NodeFS = struct {
                     total += amt;
                     // There are cases where stat()'s size is wrong or out of date
                     if (total > size and amt != 0) {
-                        buf.ensureUnusedCapacity(8096) catch unreachable;
+                        buf.ensureUnusedCapacity(8192) catch unreachable;
                         buf.expandToCapacity();
                         continue;
                     }
@@ -5161,7 +5161,7 @@ pub const NodeFS = struct {
                         total += amt;
                         // There are cases where stat()'s size is wrong or out of date
                         if (total > size and amt != 0) {
-                            buf.ensureUnusedCapacity(8096) catch unreachable;
+                            buf.ensureUnusedCapacity(8192) catch unreachable;
                             buf.expandToCapacity();
                             continue;
                         }
@@ -5377,7 +5377,7 @@ pub const NodeFS = struct {
                 } };
 
             // Seems like `rc` does not contain the errno?
-            std.debug.assert(rc.value == 0);
+            std.debug.assert(rc.errEnum() == null);
             const buf = bun.span(req.ptrAs([*:0]u8));
 
             return .{
